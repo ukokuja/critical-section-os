@@ -1,12 +1,10 @@
 //
-// Created by lucas on 09/07/2021.
+// Created by lucas on 03/07/2021.
 //
+
 #pragma once
 #include <stdio.h>
 
-//
-// Created by lucas on 03/07/2021.
-//
 typedef struct MutexStruct {
     char state;
 } Mutex;
