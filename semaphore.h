@@ -11,15 +11,17 @@ typedef struct SemaphoreStruct{
 
 void SemInit(Semaphore* cs, int _val){
     MutexInit(&cs->mutex);
+    MutexInit(&cs->gate);
     cs->val = _val;
-    if (_val > 0) {
-        MutexInitPos(&cs->gate);
+    if (_val <= 0) {
+        MutexAcquire(&cs->gate);
     }
 }
 
 void SemDec(Semaphore* cs){
     MutexAcquire(&cs->gate);
     MutexAcquire(&cs->mutex);
+    __sync_synchronize();
     cs->val--;
     __sync_synchronize();
     if (cs->val > 0){
@@ -30,6 +32,7 @@ void SemDec(Semaphore* cs){
 
 void SemInc(Semaphore* cs){
     MutexAcquire(&cs->mutex);
+    __sync_synchronize();
     cs->val++;
     __sync_synchronize();
     if (cs->val == 1){

@@ -18,7 +18,7 @@ void MutexInitPos(Mutex* m) {
 };
 
 void MutexAcquire(Mutex* m) {
-    while (m->state <= 0 && !__sync_bool_compare_and_swap(&m->state, 0, 1));
+    while (!__sync_bool_compare_and_swap(&m->state, 0, 1));
     __sync_synchronize();
     usleep(5);
 };
