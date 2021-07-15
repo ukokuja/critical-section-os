@@ -13,17 +13,12 @@ typedef struct MutexStruct {
 void MutexInit(Mutex* m) {
    m->state=0;
 };
-void MutexInitPos(Mutex* m) {
-   m->state=1;
-};
 
 void MutexAcquire(Mutex* m) {
     while (!__sync_bool_compare_and_swap(&m->state, 0, 1));
-    __sync_synchronize();
     usleep(5);
 };
 
 void MutexRelease(Mutex* m) {
     m->state = 0;
-    __sync_synchronize();
 }

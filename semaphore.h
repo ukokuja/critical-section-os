@@ -13,9 +13,6 @@ void SemInit(Semaphore* cs, int _val){
     MutexInit(&cs->mutex);
     MutexInit(&cs->gate);
     cs->val = _val;
-    if (_val <= 0) {
-        MutexAcquire(&cs->gate);
-    }
 }
 
 void SemDec(Semaphore* cs){

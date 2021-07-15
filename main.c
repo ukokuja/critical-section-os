@@ -10,61 +10,75 @@ int x = 0;
 Semaphore r;
 Semaphore rw;
 int read_count = 0;
-int amount_of_times_in_read_section = 0;
-int amount_of_times_in_write_section = 0;
+char reader_id = 'A';
 
 void Reader(void) {
-    while(run) {
+    int read_credits = 30;
+    int my_reader_id = reader_id++;
+    while(run && read_credits > 0) {
         SemDec(&r);
+        __sync_synchronize();
         read_count++;
         __sync_synchronize();
         if (read_count == 1) SemDec(&rw);
         SemInc(&r);
-        amount_of_times_in_read_section++;
+        printf(">> Reading using reader %c - %d credits left >>\n", my_reader_id, read_credits);
+        usleep(30000);
+        printf("<< Reading using reader %c <<\n", my_reader_id);
         SemDec(&r);
+        __sync_synchronize();
         read_count--;
         __sync_synchronize();
         if (read_count == 0) SemInc(&rw);
         SemInc(&r);
+        read_credits--;
+    }
+    if (read_credits < 1) {
+        printf("**** Reader %c have not credits ****\n", my_reader_id);
     }
 }
 
 void Writer(void) {
     while(run) {
         SemDec(&rw);
+        __sync_synchronize();
+        printf(">> Writing >>\n");
         x++;
-        amount_of_times_in_write_section++;
+        usleep(300000);
+        printf("<< Writing <<\n");
         __sync_synchronize();
         SemInc(&rw);
     }
 }
 
 void* Worker(void *func) {
-    SemInit(&r, 1);
-    SemInit(&rw, 1);
-    long func_id = (long)func & 0x1;
-    printf("%s %d\n",__func__, (int)func_id);
+    long func_id = (long)func;
+    sleep(1 * (int)func_id);
     switch (func_id) {
         case 0:
-            Reader();
-            break;
-        case 1:
+            printf("Starting writer\n");
             Writer();
             break;
+        case 1:
+        case 2:
+        case 3:
+            printf("Starting Reader\n");
+            Reader();
+            break;
+
     }
     return NULL;
 }
 
-#define MAX_PROCESSORS 4 // Minimal processors is 2.
 
 int main(int argc, char *argv[]) {
     pthread_t t[argc];
     pthread_attr_t at;
     cpu_set_t cpuset;
-    int threads;
+    int threads = 4;
     int i;
-    threads = argc > 1 ? (( atoi(argv[1]) < 4) ? atoi(argv[1]):
-                          MAX_PROCESSORS ) : 1;
+    SemInit(&r, 1);
+    SemInit(&rw, 1);
     for (i = 0;i < threads; i++){
         CPU_ZERO(&cpuset);
         CPU_SET(i, &cpuset);
@@ -74,14 +88,10 @@ int main(int argc, char *argv[]) {
             perror("pthread create 1 error\n");
         }
     }
-    do {
-        sleep(1);
-    } while(x < 0);
+    sleep(10);
     run = 0;
     void *val;
     for(i = 0; i < threads; i++)
         pthread_join(t[i], &val);
     printf("Final Output x = %d\n", x);
-    printf("Amount of times in read section = %d and amount of times in write section = %d\n",
-           amount_of_times_in_read_section, amount_of_times_in_write_section);
 }
