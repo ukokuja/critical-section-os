@@ -4,11 +4,16 @@ Single Project - OS
 =====================================
 
 Steps:
-
+-------
 1. ```make all```
 
 2. ```./main <threads>```
 
+For tests:
+-------
+1. ```cd test```
+2. ```make all```
+3. ```make test```
 
 Student name       | ID
 | -------------     |-------------
