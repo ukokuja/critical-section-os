@@ -7,7 +7,7 @@ Steps:
 -------
 1. ```make all```
 
-2. ```./main <threads>```
+2. ```./main```
 
 For tests:
 -------
