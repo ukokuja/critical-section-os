@@ -15,10 +15,11 @@ void MutexInit(Mutex* m) {
 };
 
 void MutexAcquire(Mutex* m) {
-    while (!__sync_bool_compare_and_swap(&m->state, 0, 1));
-    usleep(5);
+    while (!__sync_bool_compare_and_swap(&m->state, 0, 1))
+        usleep(1);
 };
 
 void MutexRelease(Mutex* m) {
     m->state = 0;
+    __sync_synchronize();
 }
