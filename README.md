@@ -5,9 +5,9 @@ Single Project - OS
 
 For tests:
 -------
-1. ```cd test```
 2. ```make all```
-3. ```make test```
+3. ```make test_all```
+
 
 Student name       | ID
 | -------------     |-------------
