@@ -27,23 +27,29 @@ void *addTotal(void *x) {
 
 
 void test_not_all_ones() {
+    printf("test_not_all_ones\n");
     int i;
     for (i = 0; i < N; i++) {
         if (numbers[i] != 1) break;
     }
     assert(i < N);
+    printf("✓ PASSED: test_not_all_ones\n");
 }
 void test_at_most_three() {
+    printf("test_at_most_three\n");
     for (int i = 0; i < N; i++) {
         assert(numbers[i] < 4);
     }
+    printf("✓ PASSED: test_at_most_three\n");
 }
 void test_sum_equals_N() {
+    printf("test_sum_equals_N\n");
     int total = 0;
     for (int i = 0; i < N; i++) {
         total += numbers[i];
     }
     assert(total == N);
+    printf("✓ PASSED: test_sum_equals_N\n");
 }
 int main() {
     SemInit(&s, 3);
@@ -56,8 +62,9 @@ int main() {
     }
 
     sleep(1);
+    printf("Starting semaphore tests:\n");
     test_not_all_ones();
     test_at_most_three();
     test_sum_equals_N();
-    printf("Test semaphore passed :) \n");
+    printf("\n");
 }

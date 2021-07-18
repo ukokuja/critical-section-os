@@ -10,6 +10,10 @@ typedef struct MutexStruct {
 } Mutex;
 
 
+void MutexInitPos(Mutex* m) {
+    m->state=1;
+};
+
 void MutexInit(Mutex* m) {
    m->state=0;
 };

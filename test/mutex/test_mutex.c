@@ -27,24 +27,30 @@ void *addTotal(void *x) {
 
 
 void test_all_ones() {
-    int i = 0;
+    printf("test_all_ones\n");
+    int i;
     for (i = 0; i < N; i++) {
         if (numbers[i] != 1) break;
     }
     assert(i == N);
+    printf("✓ PASSED: test_all_ones\n");
 }
 void test_at_most_one() {
+    printf("test_at_most_one\n");
     for (int i = 0; i < N; i++) {
         assert(numbers[i] < 2);
         assert(numbers[i] > 0);
     }
+    printf("✓ PASSED: test_at_most_one\n");
 }
 void test_sum_equals_N() {
+    printf("test_sum_equals_N\n");
     int total = 0;
     for (int i = 0; i < N; i++) {
         total += numbers[i];
     }
     assert(total == N);
+    printf("✓ PASSED: test_sum_equals_N\n");
 }
 int main() {
     MutexInit(&m);
@@ -57,8 +63,9 @@ int main() {
     }
 
     sleep(1);
+    printf("Starting mutex tests:\n");
     test_all_ones();
     test_at_most_one();
     test_sum_equals_N();
-    printf("Test mutex passed :) \n");
+    printf("\n");
 }
