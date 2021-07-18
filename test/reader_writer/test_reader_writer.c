@@ -79,7 +79,7 @@ void *Worker(void *func) {
 }
 
 void test_multiple_readers_simultanous() {
-    printf("test_multiple_readers_simultanous:\n");
+    printf("test_multiple_readers_simultanous\n");
     int create_two_in_a_row = 0;
     for (int i = 0; i < actions_index - 1; i++) {
         if (((actions[i] == 1 || actions[i] == 2) && actions[i + 1] == 3) ||
@@ -89,16 +89,16 @@ void test_multiple_readers_simultanous() {
         }
     }
     assert(create_two_in_a_row > 0);
-    printf("✓ PASSED: test_multiple_readers_simultanous:\n");
+    printf("✓ PASSED: test_multiple_readers_simultanous\n");
 }
 
 void test_no_readers_writer_simultanous() {
-    printf("test_no_readers_writer_simultanous:\n");
+    printf("test_no_readers_writer_simultanous\n");
     for (int i = 0; i < actions_index - 1; i++) {
         if (actions[i] == 4)
             assert(actions[i + 1] == 14);
     }
-    printf("✓ PASSED: test_no_readers_writer_simultanous:\n");
+    printf("✓ PASSED: test_no_readers_writer_simultanous\n");
 }
 
 

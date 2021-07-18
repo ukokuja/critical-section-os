@@ -3,12 +3,6 @@
 Single Project - OS
 =====================================
 
-Steps:
--------
-1. ```make all```
-
-2. ```./main```
-
 For tests:
 -------
 1. ```cd test```
