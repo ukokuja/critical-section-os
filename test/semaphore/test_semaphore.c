@@ -1,6 +1,8 @@
 //
 // Created by lucas on 13/07/2021.
 //
+#define _GNU_SOURCE
+#include <sched.h>
 
 #include <stdlib.h>
 #include <pthread.h>
@@ -54,7 +56,13 @@ void test_sum_equals_N() {
 int main() {
     SemInit(&s, 3);
     pthread_t threads[N];
+    pthread_attr_t at;
+    cpu_set_t cpuset;
     for (int i = 0; i < N; i++) {
+        CPU_ZERO(&cpuset);
+        CPU_SET(0, &cpuset);
+        pthread_attr_init(&at);
+        pthread_attr_setaffinity_np(&at, sizeof(cpuset), &cpuset);
         pthread_create(&threads[i], NULL, addTotal, (void*)&i);
     }
     for (int i = 0; i < N; i++) {

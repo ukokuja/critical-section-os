@@ -61,7 +61,7 @@ int main() {
     cpu_set_t cpuset;
     for (int i = 0; i < N; i++) {
         CPU_ZERO(&cpuset);
-        CPU_SET(0, &cpuset);
+        CPU_SET(i, &cpuset);
         pthread_attr_init(&at);
         pthread_attr_setaffinity_np(&at, sizeof(cpuset), &cpuset);
         pthread_create(&threads[i], NULL, addTotal, (void*)&i);
@@ -71,7 +71,7 @@ int main() {
     }
 
     sleep(1);
-    printf("Starting mutex tests:\n");
+    printf("Starting mutex tests multi-core:\n");
     test_all_ones();
     test_at_most_one();
     test_sum_equals_N();

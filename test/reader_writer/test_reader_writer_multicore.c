@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
     MutexInit(&mutex_index);
     for (i = 0; i < threads; i++) {
         CPU_ZERO(&cpuset);
-        CPU_SET(0, &cpuset);
+        CPU_SET(i, &cpuset);
         pthread_attr_init(&at);
         pthread_attr_setaffinity_np(&at, sizeof(cpuset), &cpuset);
         if (pthread_create(&t[i], &at, Worker, (void *) (long) i)) {
