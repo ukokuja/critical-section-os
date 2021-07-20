@@ -15,6 +15,9 @@ ReaderWriter rw;
 Mutex mutex_index;
 char reader_id = 1;
 
+/**
+ *  Tries to get read lock and logs its actions
+ */
 void Reader(void) {
     int read_credits = 30;
     int my_reader_id = reader_id++;
@@ -38,6 +41,9 @@ void Reader(void) {
     }
 }
 
+/**
+ * Tries to get write lock and logs its actions
+ */
 void Writer(void) {
     int writer_id = 4;
     while (run) {
@@ -101,7 +107,11 @@ void test_no_readers_writer_simultanous() {
     printf("✓ PASSED: test_no_readers_writer_simultanous\n");
 }
 
-
+/**
+ * Creates N threads on 1 core. Initialize the primitives.
+ * Threads runs worker
+ * Runs tests
+ */
 int main(int argc, char *argv[]) {
     pthread_t t[argc];
     pthread_attr_t at;

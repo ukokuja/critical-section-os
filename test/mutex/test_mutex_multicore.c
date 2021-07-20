@@ -17,8 +17,10 @@ Mutex m;
 int number = 0;
 int numbers[N] = {0};
 
-
-void *addTotal(void *x) {
+/**
+ *  Increase the counter on the current index and increments the index
+ */
+void *addTotal() {
     MutexAcquire(&m);
     numbers[number]++;
     usleep(10000);
@@ -54,6 +56,11 @@ void test_sum_equals_N() {
     assert(total == N);
     printf("✓ PASSED: test_sum_equals_N\n");
 }
+/**
+ * Creates N threads on 4 cores. Initialize the mutex.
+ * Threads runs method addTotal
+ * Runs tests
+ */
 int main() {
     MutexInit(&m);
     pthread_t threads[N];
@@ -61,7 +68,7 @@ int main() {
     cpu_set_t cpuset;
     for (int i = 0; i < N; i++) {
         CPU_ZERO(&cpuset);
-        CPU_SET(i, &cpuset);
+        CPU_SET(i%4, &cpuset);
         pthread_attr_init(&at);
         pthread_attr_setaffinity_np(&at, sizeof(cpuset), &cpuset);
         pthread_create(&threads[i], NULL, addTotal, (void*)&i);

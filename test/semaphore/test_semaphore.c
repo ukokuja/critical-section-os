@@ -18,7 +18,10 @@ int number = 0;
 int numbers[N] = {0};
 
 
-void *addTotal(void *x) {
+/**
+ *  Increase the counter on the current index and increments the index
+ */
+void *addTotal() {
     SemDec(&s);
     numbers[number]++;
     usleep(10000);
@@ -53,6 +56,12 @@ void test_sum_equals_N() {
     assert(total == N);
     printf("✓ PASSED: test_sum_equals_N\n");
 }
+
+/**
+ * Creates N threads on 1 core. Initialize a semaphore with 3 concurrent locks.
+ * Threads run method addTotal
+ * Runs tests
+ */
 int main() {
     SemInit(&s, 3);
     pthread_t threads[N];
